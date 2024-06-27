@@ -18,11 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test-db-connection', function () {
-    try {
-        DB::connection()->getPdo();
-        echo "Conexão bem-sucedida!";
-    } catch (\Exception $e) {
-        die("Não foi possível conectar ao banco de dados: " . $e->getMessage());
-    }
-});
+// Route::get('/test-db-connection', function () {
+//     try {
+//         DB::connection()->getPdo();
+//         echo "Conexão bem-sucedida!";
+//     } catch (\Exception $e) {
+//         die("Não foi possível conectar ao banco de dados: " . $e->getMessage());
+//     }
+// });

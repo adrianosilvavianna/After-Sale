@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -32,8 +33,9 @@ class AuthController extends Controller
             ]);
 
             $userFormat = new UserResource($user);
+
             return response()->json([
-                'user' => $userFormat
+                'user' => $userFormat,
             ]);
             
         }catch(Exception $e){
@@ -54,13 +56,15 @@ class AuthController extends Controller
 
         if (auth()->attempt($credentials)) {
             $user = $request->user();
+        
             
-            $token = $user->createToken('MyApp');
+            $token = $user->createToken('TokenGenarate');
 
             return response()->json([
                 'access_token' => $token->accessToken,
                 'token_type' => 'Bearer',
-                'user' => $user
+                'user' => $user,
+                'message' => 'User-Authorized'
             ]);
          
             

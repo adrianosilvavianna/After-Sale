@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ShopifyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,7 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
+    Route::get('shopify/getProductsByIds', [ShopifyController::class, 'getProductsByIds']);
+    Route::get('shopify/getProductById', [ShopifyController::class, 'getProductById']);
+    Route::post('shopify/createProduct', [ShopifyController::class, 'createProduct']);
 });
