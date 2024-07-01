@@ -31,5 +31,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('favorite-product', [FavoriteProductController::class, 'index']);
     Route::post('favorite-product/create', [FavoriteProductController::class, 'create']);
     Route::post('/favorite-product/batch', [FavoriteProductController::class, 'addProductsToFavoritesBatch']);
+    Route::delete('favorite-product/{id}', [FavoriteProductController::class, 'destroy']);
 });
 

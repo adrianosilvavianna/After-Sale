@@ -48,7 +48,7 @@ class ShopifyController extends Controller
             return response()->json($validator, 500);
         }
 
-        $data = json_decode($this->shopify->getProductsByIds());
+        $data = $this->shopify->getProductsByIds();
         $collection = collect($data->products);
 
         $name = $request->name;
@@ -57,7 +57,7 @@ class ShopifyController extends Controller
             return strpos($item->title, $name) !== false;
         });
 
-        return json_encode($filtered);
+        return response()->json($filtered);
     }
 
 }

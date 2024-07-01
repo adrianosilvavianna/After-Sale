@@ -1,16 +1,18 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\Models\User;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Passport\Passport;
-use Tests\TestCase;
+use Illuminate\Http\Request;
+use Exception;
 
 class ShopifyControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    // use RefreshDatabase;
+
     protected $user;
 
     public function setUp(): void
@@ -30,10 +32,9 @@ class ShopifyControllerTest extends TestCase
 
     public function testAuthenticatedUserCanAccessProducts()
     {
-        // Autenticar o usuário usando Passport
         Passport::actingAs($this->user);
 
-        $response = $this->getJson('/api/user');
+        $response = $this->get('/api/user');
         // $response->dump();
         $response->assertStatus(200);
         $response->assertJson(['message' => 'User-Authorized']);
@@ -42,7 +43,6 @@ class ShopifyControllerTest extends TestCase
 
     public function testGetProducts()
     {
-        // Autenticar o usuário usando Passport
         Passport::actingAs($this->user);
 
         $response = $this->getJson('/api/shopify/getProductsByIds');
@@ -53,7 +53,6 @@ class ShopifyControllerTest extends TestCase
 
     public function testGetProductsByIds()
     {
-        // Autenticar o usuário usando Passport
         Passport::actingAs($this->user);
 
         $params = ['4543371706507', '4543373377675'];

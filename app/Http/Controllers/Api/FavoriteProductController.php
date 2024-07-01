@@ -29,10 +29,17 @@ class FavoriteProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
-        return response()->json($user->favoriteProducts, 200);
+
+        if($request->name){
+            $favoriteProducts = $user->favoriteProducts()->where('title', 'like', '%'.$request->name.'%')->get();
+        }else{
+            $favoriteProducts = $user->favoriteProducts;
+        }
+        dd($favoriteProduct);
+        return response()->json($favoriteProducts);
     }
 
     /**
@@ -73,25 +80,19 @@ class FavoriteProductController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\FavoriteProduct  $favoriteProduct
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, FavoriteProduct $favoriteProduct)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\FavoriteProduct  $favoriteProduct
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FavoriteProduct $favoriteProduct)
+    public function destroy($id)
     {
-        //
+        try {
+            $produto = FavoriteProduct::findOrFail($id);
+            $produto->delete();
+            return response()->json(['message' => 'Produto deletado com sucesso!'], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Ocorreu um erro: ' . "O produto favoritado não foi encontrado."], 500);
+        }
     }
 }
