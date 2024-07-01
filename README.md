@@ -1,5 +1,12 @@
 ## Configs
 
+Versões:
+Laravel Framework 8.83.27
+PHP +7.3.11 
+Composer 2.7.7
+Banco de Dados Postgresql / Mysql
+Postman 2.1
+
 ## Banco De Dados
 Precisei rodar no banco Postgres pois é o que tenho instalado em minha maquina, roda o comando abaixo para fazer a configuração
 Mas se precisar rodar em MySql é só descomentar no .env
