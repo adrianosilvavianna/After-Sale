@@ -1,48 +1,36 @@
-## Require Commands
+## Configs
 
+## Banco De Dados
 Precisei rodar no banco Postgres pois é o que tenho instalado em minha maquina, roda o comando abaixo para fazer a configuração
+Mas se precisar rodar em MySql é só descomentar no .env
 
-composer require postfresql
-[0]
-
-Após rodar o projeto, teste a conexção usando a URL
-
-http://localhost:8000/test-db-connection
-
+## Autenticação Do Usuário
 O método de Autenticação instalado no projeto foi o Passport
+comando para instalação:
 
-comando 
-composer require laravel/passport
 php artisan passport:install --uuids
 
-inserir o personal acess e o grant client no .env
+-> inserir o personal acess e o grant client que vier do comando no .env
 
+PASSPORT_PERSONAL_ACCESS_CLIENT_ID=
+PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=
+PASSPORT_PASSWORD_GRANT_CLIENT_ID=
+PASSPORT_PASSWORD_GRANT_CLIENT_SECRET=
 
-Config Shopify
-
-composer require ohmybrew/laravel-shopify
-
-php artisan vendor:publish --tag=shopify-config
-
-
-brew update
-brew upgrade
-brew reinstall ca-certificates
-
-
+## Configs de Fila
 php artisan queue:table
 php artisan migrate
 php artisan queue:work
 
 
-Definir variaveis no Postman
+##Definir variaveis no Postman
 
 No canto superior direito do Postman, clique no ícone de olho Environment quick look.
 Clique em "Add" para criar um novo ambiente.
 Dê um nome ao ambiente e adicione as variáveis necessárias.
-Defina base_url e api_key.
+Defina base_url => http://localhost:8000/  e api_key => access_token da rota /login.
 
-Em casos de erros com Passport 
+##Em casos de erros com Passport 
 Recomendo usar os comandos:
 
 php artisan migrate:refresh
