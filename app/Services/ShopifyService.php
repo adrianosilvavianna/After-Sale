@@ -2,8 +2,12 @@
 
 namespace App\Services;
 
+use App\Exceptions\NullVariableException;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use Illuminate\Support\Facades\Validator;
+use PhpParser\Node\Stmt\TryCatch;
 
 class ShopifyService
 {
@@ -24,51 +28,68 @@ class ShopifyService
         ]);
     }
 
-    public function getProductsByIds($ids = null)
+    public function getProductsByIds($listIds = null)
     {
-        $endpoint = $this->apiUrl . '/admin/api/2020-01/products.json';
-        
-        if ($ids) {
-            $endpoint .= '?ids=' . $ids;
+        try {
+            $endpoint = $this->apiUrl . '/admin/api/2020-01/products.json';
+            
+            if(is_array($listIds) || !is_null($listIds)){
+                $ids = "";
+                foreach($listIds as $id){
+                    $ids .= $id.", ";
+                }
+                $endpoint .= '?ids=' . $ids;
+            }
+            
+            $response = $this->client->request('GET', $endpoint);
+            
+            return json_decode($response->getBody()->getContents());
+
+        } catch (ClientException $exception) {
+            return $this->validateExceptionResponseStatusCode($exception);
         }
-        
-        $response = $this->client->request('GET', $endpoint);
-        return $response->getBody()->getContents();
 
     }
 
     public function getProductById($productId)
     {
-        $endpoint = $this->apiUrl . "/admin/api/2020-01/products/{$productId}.json";
-        $response = $this->client->request('GET', $endpoint);
-        return $response->getBody()->getContents();
+        try {
+
+            $endpoint = $this->apiUrl . "/admin/api/2020-01/products/{$productId}.json";
+            $response = $this->client->request('GET', $endpoint);
+        
+            return json_decode($response->getBody()->getContents());
+            
+        } catch (ClientException $exception) {
+            return $this->validateExceptionResponseStatusCode($exception);
+        }
+        
     }
 
-    public function createProduct(array $data)
-    {
-        $endpoint = $this->apiUrl . '/admin/api/2020-01/products.json';
-        $response = $this->client->request('POST', $endpoint, $data);
-        return $response->getBody()->getContents();
+    protected function validateExceptionResponseStatusCode($exception){
+
+        $response = $exception->getResponse();
+
+        if ($response !== null) {
+            $statusCode = $response->getStatusCode();
+
+            if($statusCode == 404){
+                $e = new NullVariableException("ID inválido - Produto não encontrado na API do Shopify");
+                return $e->getMessage();
+            }else {
+                $responseData = json_decode($response->getBody()->getContents(), true);
+            
+                if (isset($responseData['errors'])) {
+                    $errors = $responseData['errors'];
+                    return response()->json(['error' => "Erro $statusCode: " . $errors]);
+                }
+            }
+
+        } else {
+            // Lidar com o caso em que não há resposta do servidor
+            return response()->json(['error_status_code' => $response->getStatusCode()]);
+        }
     }
-
-    public function updateProduct($productId, array $data)
-    {
-        $endpoint = $this->apiUrl . "/admin/api/2020-01/products/{$productId}.json";
-        $response = $this->client->request('PUT', $endpoint, $data);
-        return $response->getBody()->getContents();
-    }
-
-    // public function deleteProduct($productId)
-    // {
-    //     $endpoint = $this->apiUrl . "/admin/api/2020-01/products/{$productId}.json";
-    //     $response = Http::withBasicAuth($this->apiKey, $this->apiPassword)->delete($endpoint);
-    //     return $response->json();
-    // }
-
-    // public function countProducts()
-    // {
-    //     $endpoint = $this->apiUrl . '/admin/api/2020-01/products/count.json';
-    //     $response = Http::withBasicAuth($this->apiKey, $this->apiPassword)->get($endpoint);
-    //     return $response->json();
-    // }
+        
+   
 }

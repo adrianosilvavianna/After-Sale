@@ -15,9 +15,17 @@ class CreateFavoriteProductsTable extends Migration
     {
         Schema::create('favorite_products', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('shopify_product_id');
+            $table->string('title');
+            $table->longText('body_html');
+            $table->string('vendor');
+            $table->string('handle');
+            $table->string('status');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.

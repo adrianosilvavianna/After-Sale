@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Services\ShopifyService;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 
 class ShopifyController extends Controller
 {
@@ -23,20 +23,41 @@ class ShopifyController extends Controller
 
     public function getProductById(Request $request)
     {
+        $rules = ['id' => 'required|int'];
+
+        $validator = Validator::make($request->all(), $rules, [
+            'required' => 'O ID do produto é um campo obrigatório.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator, 500);
+        }
+
         return $this->shopify->getProductById($request->id);
     }
 
     public function getProductByName(Request $request){
-        $data = $this->shopify->getProductsByIds();
+
+        $rules = ['name' => 'required|string|max:255'];
+
+        $validator = Validator::make($request->all(), $rules, [
+            'required' => 'O :attribute é um campo obrigatório.',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator, 500);
+        }
+
+        $data = json_decode($this->shopify->getProductsByIds());
+        $collection = collect($data->products);
+
+        $name = $request->name;
         
-        $collection = collect($data);
-        
-        dd($collection);
-        // $filtered = $collection->filter(function ($item) {
-        //     return $item['id'] > 1;
-        // });
-        
-        // dd($filtered->values()->toArray());
+        $filtered = $collection->filter(function ($item) use ($name) {
+            return strpos($item->title, $name) !== false;
+        });
+
+        return json_encode($filtered);
     }
-    
+
 }

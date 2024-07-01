@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\FavoriteProductController;
 use App\Http\Controllers\Api\ShopifyController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +25,11 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
-    Route::get('shopify/getProductsByIds', [ShopifyController::class, 'getProductsByIds']);
-    Route::get('shopify/getProductById', [ShopifyController::class, 'getProductById']);
-    Route::post('shopify/createProduct', [ShopifyController::class, 'createProduct']);
+    Route::get('shopify/get-products-by-ids', [ShopifyController::class, 'getProductsByIds']);
+    Route::get('shopify/get-product-by-id', [ShopifyController::class, 'getProductById']);
+    Route::get('shopify/get-product-by-name', [ShopifyController::class, 'getProductByName']);
+    Route::get('favorite-product', [FavoriteProductController::class, 'index']);
+    Route::post('favorite-product/create', [FavoriteProductController::class, 'create']);
+    Route::post('/favorite-product/batch', [FavoriteProductController::class, 'addProductsToFavoritesBatch']);
 });
+
