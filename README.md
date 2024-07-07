@@ -9,8 +9,8 @@
 
 ## Rodar o projeto
 
-Composer install
-Php artisan serve
+- Composer install
+- Php artisan serve
 
 ## Banco De Dados
 Precisei rodar no banco Postgres pois é o que tenho instalado em minha maquina, roda o comando abaixo para fazer a configuração
@@ -20,19 +20,19 @@ Mas se precisar rodar em MySql é só descomentar no .env
 O método de Autenticação instalado no projeto foi o Passport
 comando para instalação:
 
-php artisan passport:install --uuids
+- php artisan passport:install --uuids
 
 -> inserir o personal acess e o grant client que vier do comando no .env
 
-PASSPORT_PERSONAL_ACCESS_CLIENT_ID=
-PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=
-PASSPORT_PASSWORD_GRANT_CLIENT_ID=
-PASSPORT_PASSWORD_GRANT_CLIENT_SECRET=
+- PASSPORT_PERSONAL_ACCESS_CLIENT_ID=
+- PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=
+- PASSPORT_PASSWORD_GRANT_CLIENT_ID=
+- PASSPORT_PASSWORD_GRANT_CLIENT_SECRET=
 
 ## Configs de Fila
-php artisan queue:table
-php artisan migrate
-php artisan queue:work
+- php artisan queue:table
+- php artisan migrate
+- php artisan queue:work
 
 
 ## Definir variaveis no Postman
