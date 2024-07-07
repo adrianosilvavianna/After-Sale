@@ -1,11 +1,11 @@
 ## Configs
 
-Versões: \n
-Laravel Framework 8.83.27
-PHP +7.3.11 
-Composer 2.7.7
-Banco de Dados Postgresql / Mysql
-Postman 2.1
+# Versões: 
+- Laravel Framework 8.83.27
+- PHP +7.3.11 
+- Composer 2.7.7
+- Banco de Dados Postgresql / Mysql
+- Postman 2.1
 
 ## Rodar o projeto
 
