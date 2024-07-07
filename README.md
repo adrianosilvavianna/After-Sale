@@ -44,11 +44,11 @@ Defina base_url => http://localhost:8000/  e api_key => access_token da rota /lo
 
 ## Rodar casos de teste 
 
-Php artisan test
+- Php artisan test
 
-##Em casos de erros com Passport 
+## Em casos de erros com Passport 
 Recomendo usar os comandos:
 
-php artisan migrate:refresh
-composer require laravel/passport
-php artisan passport:install --uuids
+- php artisan migrate:refresh
+- composer require laravel/passport
+- php artisan passport:install --uuids
