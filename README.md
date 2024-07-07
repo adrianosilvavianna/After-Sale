@@ -1,6 +1,6 @@
 ## Configs
 
-Versões:
+Versões: \n
 Laravel Framework 8.83.27
 PHP +7.3.11 
 Composer 2.7.7
